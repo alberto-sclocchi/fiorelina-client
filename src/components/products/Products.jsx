@@ -1,17 +1,22 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import ProductBox from './pages/ProductBox'
+import ProductContext from './context/ProductContext.context';
 
 export default function Products() {
-  const productsArray = [
-    { id: 1, name: 'Product 1', price: 10.0 },
-    { id: 2, name: 'Product 2', price: 20.0 },
-    { id: 3, name: 'Product 3', price: 30.0 }
-  ]
+  const { products, getAllProducts } = useContext(ProductContext);
+
+  useEffect(() => {
+    if (!products) {
+      getAllProducts();
+    }
+  }, []);
+
   return (
     <div>
         <h3>Products</h3>
-        {productsArray.map((product) => {
-            return <ProductBox key={product.id} {...product} />
+        {!!products && 
+          products.map((product, index) => {
+            return <ProductBox key={index} {...product} />
         })}
     </div>
   )
