@@ -23,4 +23,11 @@ export default class ProductService{
         })
     }
 
+    getProduct(productId){
+        return this.service.get(`/${productId}`).then((resp)=>{
+            console.log(resp.data);
+            return resp.data;
+        })
+    }
+
 }

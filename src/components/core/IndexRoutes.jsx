@@ -3,6 +3,7 @@ import HomePage from '../landing-page/HomePage'
 import Contact from './Contact'
 import Products from '../products/Products'
 import CreateProduct from '../products/CreateProduct'
+import ProductInfoBox from '../products/pages/ProductInfoBox'
 
 export default function IndexRoutes() {
   return (
@@ -10,7 +11,8 @@ export default function IndexRoutes() {
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/contact" element={<Contact />} />
         <Route exact path="/products" element={<Products />} />
-        <Route exact path="/create-products" element={<CreateProduct />} />
+        <Route exact path="/products/create" element={<CreateProduct />} />
+        <Route exact path="/products/:productId" element={<ProductInfoBox />} />
     </Routes>
   )
 }
