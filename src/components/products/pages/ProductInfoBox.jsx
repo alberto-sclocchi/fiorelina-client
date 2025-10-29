@@ -7,9 +7,16 @@ export default function ProductInfoBox() {
   const { product, getProduct } = useContext(ProductContext);
 
   useEffect(() => {
-    // You can use productId to fetch product details here
     getProduct(productId)
   }, [productId]);
+
+  const addToCart = () => {
+    console.log(`Product ${product._id} added to cart.`);
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    console.log(product)
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
 
   return (
     <div>
@@ -20,6 +27,7 @@ export default function ProductInfoBox() {
             <img src="https://www.giverecipe.com/wp-content/uploads/2020/06/Chocolate-Strawberry-Cake-Recipe.jpg" alt={product.name} style={{width:"6vw"}}/>
             <p>Price: ${product.price.toFixed(2)}</p>
             <p>{product.ingredients.join("/")}</p>
+            <button onClick={addToCart}>Add to Cart</button>
           </div>
         ) : (
           <p>Loading...</p>
