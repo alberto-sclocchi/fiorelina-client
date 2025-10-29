@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 export default function Cart() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -9,14 +10,17 @@ export default function Cart() {
         {cart.length === 0 ? 
           <p>Your cart is empty.</p>
          : 
-          <ul>
-            {cart.map((item, index) => (
-              <li key={index}>
-                <h4>{item.name}</h4>
-                <p>Price: ${item.price.toFixed(2)}</p>
-              </li>
-            ))}
-          </ul>
+         <div>
+            <ul>
+                {cart.map((item, index) => (
+                <li key={index}>
+                    <h4>{item.name}</h4>
+                    <p>Price: ${(item.price * item.quantity).toFixed(2)}</p>
+                </li>
+                ))}
+            </ul>
+            <Link to="/cart/order-info">Next</Link>
+         </div>
         }
     </div>
   )

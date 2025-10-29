@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
 import ProductService from "../service/ProductService";
-import { useParams } from "react-router-dom";
 
 
 

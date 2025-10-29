@@ -13,8 +13,14 @@ export default function ProductInfoBox() {
   const addToCart = () => {
     console.log(`Product ${product._id} added to cart.`);
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    console.log(product)
-    cart.push(product);
+    const existingIndex = cart.findIndex(item => item._id === product._id);
+    
+    if (existingIndex !== -1) {
+      cart[existingIndex].quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+    
     localStorage.setItem('cart', JSON.stringify(cart));
   }
 
