@@ -23,8 +23,13 @@ export const CartProvider = ({ children }) => {
         }
     }
 
+    const createStripeSession = async (orderData) => {
+        const session = await service.createStripeSession(orderData);
+        return session.url
+    }
+
     return (
-        <CartContext.Provider value={{sendOrder}}>
+        <CartContext.Provider value={{sendOrder, createStripeSession}}>
             {children}
         </CartContext.Provider>
     )

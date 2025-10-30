@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react'
 import CartContext from './context/CartContext.context';
+import { loadStripe } from '@stripe/stripe-js';
+
 
 export default function OrderInfoForm() {
    const [formData, setFormData] = useState({
@@ -9,37 +11,42 @@ export default function OrderInfoForm() {
     email: ''
   })
 
-  const { sendOrder } = useContext(CartContext);
-
-
+  const { sendOrder, createStripeSession } = useContext(CartContext);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({...prevState, [name]: value}));
   }
 
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const completedOrder = {
-        ...formData,
-        products: JSON.parse(localStorage.getItem('cart')).map((product) => ({ product: product._id, quantity: product.quantity })),
-        total_price: JSON.parse(localStorage.getItem('cart')).reduce((total, product) => total + product.price * product.quantity, 0)
-    }
+    const stripe = await loadStripe("pk_test_51SNjXGJTlLPzrncOLr0pDWwqoPHaTFAe3BxUpv2GKfVoiyqu3XAMxtOV2uAN20tnqW0RongcDkMhYWON218QuMnY00KEsAx9SZ")
 
-    console.log("Order submitted:", completedOrder);
-    sendOrder(completedOrder);
-    
+    // const completedOrder = {
+    //     ...formData,
+    //     products: JSON.parse(localStorage.getItem('cart')).map((product) => ({ product: product._id, quantity: product.quantity })),
+    //     total_price: +(JSON.parse(localStorage.getItem('cart')).reduce((total, product) => total + product.price * product.quantity, 0).toFixed(2))
+    // };
+
+    // console.log("Order submitted:", completedOrder);
+    // await sendOrder(completedOrder);
+
+    // Stripe payment integration
+
+    const sessionURL = await createStripeSession(JSON.parse(localStorage.getItem('cart')));
+
+    window.location.href = sessionURL;
+
     setTimeout(() => {
       setFormData({
         name: '',
-        adress: '',
+        address: '',
         phone_number: '',
         email: ''
-      })
+      });
     }, 500);
-
   }
+
   return (
     <div>
         <form onSubmit={handleSubmit}>

@@ -16,4 +16,11 @@ export default class CartService{
         })
     }   
 
+    createStripeSession(orderData) {
+        return this.service.post('/create-checkout-session', orderData, {headers: {'Content-Type': 'application/json'}}).then((resp) => {
+            console.log(resp.data)
+            return resp.data; // should contain session URL
+        });
+    }
+
 }
