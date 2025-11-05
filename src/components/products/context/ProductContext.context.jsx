@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import ProductService from "../service/ProductService";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -9,6 +10,9 @@ const service = new ProductService();
 export const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState();
     const [ product, setProduct ] = useState();
+    const [ errorMessage, setErrorMessage ] = useState();
+    const navigateTo = useNavigate();
+
 
     const getAllProducts = async () => {
         const response =  await service.getProducts();
@@ -20,8 +24,20 @@ export const ProductProvider = ({ children }) => {
         }
     }
 
-    const createNewProduct = async (productAdded) => {
+    const createNewProduct = async (productAdded, imageFile) => {
         const response = await service.createProduct(productAdded);
+
+        if (response.success === "true"){
+            const responseFile = await service.editProductImage(imageFile, response.data._id);
+            setProduct(responseFile.data);
+            navigateTo(`/products/${response.data._id}`);
+        } else{
+            setErrorMessage(response.message);
+        }
+
+        setTimeout(() => {
+            setErrorMessage(null);
+        }, 3000);
     }
 
     const getProduct = async (productId) => {
@@ -36,7 +52,7 @@ export const ProductProvider = ({ children }) => {
     }
 
     return (
-        <ProductContext.Provider value={{products, product, getAllProducts, createNewProduct, getProduct}}>
+        <ProductContext.Provider value={{products, product, getAllProducts, createNewProduct, getProduct, errorMessage}}>
             {children}
         </ProductContext.Provider>
     )

@@ -6,9 +6,7 @@ export default function Products() {
   const { products, getAllProducts } = useContext(ProductContext);
 
   useEffect(() => {
-    if (!products) {
-      getAllProducts();
-    }
+    getAllProducts();
   }, []);
 
   return (

@@ -23,6 +23,13 @@ export default class ProductService{
         })
     }
 
+    editProductImage(imageFile, productId){
+        return this.service.patch(`/${productId}`, imageFile).then((resp)=>{
+            console.log(resp.data);
+            return resp.data;
+        })
+    }
+
     getProduct(productId){
         return this.service.get(`/${productId}`).then((resp)=>{
             console.log(resp.data);
